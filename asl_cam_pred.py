@@ -8,9 +8,7 @@ import cv2
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-
-print("Imported Modules...")
-
+# se abre el modelo y los pesos guardados en el JSON y H5 generados en el entrenamiento
 with open('Model/model.json', 'r') as f:
     model = model_from_json(f.read())
     model.summary()
@@ -21,24 +19,29 @@ scaling_factorx = 1.5
 scaling_factory = 1.5
 image_size = 224
 
-# 0 if laptop cam, 1 if external cam
+# captura de video
 cap = cv2.VideoCapture(0)
 
+# terminar cuando se detecte una interrupción de teclado
 while (cv2.waitKey(10) & 0xff) != 27:
-    ret, frame = cap.read()  # read and capture frames
-    box = cv2.rectangle(frame, (100, 100), (400, 400), (0, 255, 0), 5)  # green box
-    frame = cv2.resize(frame, None, fx=scaling_factorx, fy=scaling_factory, interpolation=cv2.INTER_AREA)  # resize window
-    frame = cv2.flip(frame, 1)  # flip image
-    cv2.imshow('video output', frame)  # display image
+    rec_obj, frame = cap.read()  # lectura de cámara
+    box = cv2.rectangle(frame, (100, 100), (400, 400), (0, 255, 0), 5)  # crear rectángulo verde de captura
+    frame = cv2.resize(frame, None, fx=scaling_factorx, fy=scaling_factory, interpolation=cv2.INTER_AREA)  # escalamiento de imagen
+    frame = cv2.flip(frame, 1)  # espejeo de imagen
 
+    # muestra de la imagen
+    cv2.imshow('video output', frame)
+
+    # escalamient de la imagen y captura del recuadro
     frame = cv2.resize(frame, (image_size, image_size))
     img_data = image.img_to_array(frame)
     img_data = np.expand_dims(img_data, axis=0)
+    # preprocesamiento para vgg16
     img_data = preprocess_input(img_data)
-
+    # predicción del modelo
     vgg16_category = model.predict(img_data)
-    print(vgg16_category)
     category = np.argmax(vgg16_category, axis=1)
-    print(category)
+    print(category)  # mostrar categoría resultante
+# liberación de recursos
 cap.release()
 cv2.destroyAllWindows()
