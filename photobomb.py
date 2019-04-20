@@ -44,24 +44,13 @@ while(True):
 
     if ret: # if frame is captured without any errors
         try:  # used try so that if user pressed other than the given key error will not be shown
-            if (cv2.waitKey(1) & 0xff) == ord(' '):#wait for space
+            if (cv2.waitKey(1) & 0xff) == 32:#wait for space
 
                 while(os.path.isfile(dir_letra+'/'+nombre_img+'.jpg')):
                     pcnt = 0 + cnt
                     cnt = cnt + 1
                     nombre_img = nombre_img.replace(str(pcnt),str(cnt))
 
-                salpicado = np.zeros(image.shape,np.uint8) # Salpicando de sal y pimienta
-                p = 0.0008	# probablity of noise
-                for i in range (image.shape[0]):
-                    for j in range(image.shape[1]):
-                        r = random.random()
-                        if r < p/2:
-                            salpicado[i][j] = 0,0,0
-                        elif r < p:
-                            salpicado[i][j] = 255,255,255
-                        else:
-                            salpicado[i][j] = image[i][j]
                 #crop_img = cv2.flip(salpicado[y:y+h, x:x+w],1)
                 crop_img = cv2.flip(image[y:y+h, x:x+w],1)
                 cv2.imwrite((dir_letra+'/'+nombre_img+'.jpg'),crop_img) #save image
