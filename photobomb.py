@@ -33,7 +33,7 @@ nombre_img = letra+'0'
 cnt = 0
 pcnt = 0
 #box coordinates
-x,y,w,h = 100,100,300,300
+x,y,w,h = 100,100,224,224
 print("---Ready For capture---")
 while(True):
     ret, image = cam.read()
@@ -44,7 +44,7 @@ while(True):
 
     if ret: # if frame is captured without any errors
         try:  # used try so that if user pressed other than the given key error will not be shown
-            if (cv2.waitKey(1) & 0xff) == 32:#wait for space
+            if (cv2.waitKey(1) & 0xff) == ord(' '):#wait for space
 
                 while(os.path.isfile(dir_letra+'/'+nombre_img+'.jpg')):
                     pcnt = 0 + cnt
@@ -52,7 +52,7 @@ while(True):
                     nombre_img = nombre_img.replace(str(pcnt),str(cnt))
 
                 salpicado = np.zeros(image.shape,np.uint8) # Salpicando de sal y pimienta
-                p = 0.001	# probablity of noise
+                p = 0.0008	# probablity of noise
                 for i in range (image.shape[0]):
                     for j in range(image.shape[1]):
                         r = random.random()
@@ -62,9 +62,8 @@ while(True):
                             salpicado[i][j] = 255,255,255
                         else:
                             salpicado[i][j] = image[i][j]
-                #salpicado = cv2.resize(salpicado, (224, 224))
-                #escalado = cv2.resize(salpicado, (224,224), interpolation = cv2.INTER_AREA)
-                crop_img = cv2.flip(salpicado[y:y+h, x:x+w],1)
+                #crop_img = cv2.flip(salpicado[y:y+h, x:x+w],1)
+                crop_img = cv2.flip(image[y:y+h, x:x+w],1)
                 cv2.imwrite((dir_letra+'/'+nombre_img+'.jpg'),crop_img) #save image
                 print("image {}.jpg succesfully captured".format(nombre_img))
             else:
@@ -72,7 +71,7 @@ while(True):
         except:
             break  # if user pressed a key other than the given key the loop will break
 	# Wait for Escape Key  
-    if (cv2.waitKey(10) & 0xff) == 113 :#wait for q
+    if (cv2.waitKey(10) & 0xff) == ord('q') :#wait for q
         break
 cam.release()
 cv2.destroyAllWindows()
