@@ -9,7 +9,7 @@ import cv2
 import random
 import os
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-letra = 'D'
+letra = 'Za'
 dir_general = './dataset'
 dir_letra = dir_general + '/' + letra
 # Creando carpetas para las imagenes
@@ -33,11 +33,11 @@ nombre_img = letra+'0'
 cnt = 0
 pcnt = 0
 #box coordinates
-x,y,w,h = 100,100,224,224
+x,y,w,h = 100,100,200,200
 print("---Ready For capture---")
 while(True):
     ret, image = cam.read()
-    box = cv2.rectangle(image ,(x-3, y-3), (x+w+3, y+h+3),(255,255,0),3)
+    box = cv2.rectangle(image ,(x-2, y-2), (x+w+2, y+h+2),(255,0,0  ),2)
     #image = cv2.resize(image, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_AREA)
     image_flipped = cv2.flip(image, 1)#flip image
     cv2.imshow('captura',image_flipped)
