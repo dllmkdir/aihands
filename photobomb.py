@@ -37,7 +37,7 @@ x,y,w,h = 100,100,200,200
 print("---Ready For capture---")
 while(True):
     ret, image = cam.read()
-    box = cv2.rectangle(image ,(x-2, y-2), (x+w+2, y+h+2),(255,0,0  ),2)
+    box = cv2.rectangle(image ,(x-1, y), (x+w-1, y+h),(255,0,0  ),2)
     #image = cv2.resize(image, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_AREA)
     image_flipped = cv2.flip(image, 1)#flip image
     cv2.imshow('captura',image_flipped)
